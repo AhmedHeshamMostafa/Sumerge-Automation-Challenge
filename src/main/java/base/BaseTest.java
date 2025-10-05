@@ -9,44 +9,40 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.*;
 import pages.HomePage;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOf;
 import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementLocated;
 
 public class BaseTest {
     private WebDriver driver;
-    protected HomePage home;
+    static protected HomePage home;
     private final By disPopUpBtn = By.cssSelector("[aria-label=\"Dismiss sign-in info.\"]");
 
-    @BeforeClass
-    public void testClassSetUp(){
-        //FirefoxOptions options = new FirefoxOptions();
-        //options.addArguments("--headless");
-        //options.addArguments("--disable-gpu");
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        home = testMethodSetUp();
-    }
 
     @BeforeMethod
-    public HomePage testMethodSetUp(){
+    public void testMethodSetUp(){
+        WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver();
         driver.get("https://www.booking.com/");
+        Set<String> windowHandles = driver.getWindowHandles();
+        List<String> tabs = new ArrayList<>(windowHandles);
+        driver.switchTo().window(tabs.get(0));
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
         wait.until(ExpectedConditions.invisibilityOfElementLocated(disPopUpBtn));
-        return new HomePage(driver);
+        home = new HomePage(driver);
     }
 
-    //@AfterSuite
-//    public void tearDown(){
-//        driver.quit();
-//    }
+    @AfterMethod
+    public void tearDown(){
+        driver.quit();
+    }
 
 
 }

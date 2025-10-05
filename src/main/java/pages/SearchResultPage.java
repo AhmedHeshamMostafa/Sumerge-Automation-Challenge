@@ -22,26 +22,14 @@ public class SearchResultPage {
         this.driver = userDriver;
     }
 
-    public void clickLoadMoreResBtn(){
-        Generic.clickElement(driver, loadMoreResultsBtn);
-    }
-
     public DetailsPage seeAvailability(String hotelName){
         WebElement targetHotel = null;
-        boolean hotelFound = false;
-        byte loadMoretimes = 4;
-        for(byte i=0; i<loadMoretimes; i++){
-            for(WebElement hotel : driver.findElements(searchResultsTxts)){
-                if(hotel.getText().toLowerCase().contains(hotelName.trim().toLowerCase())){
-                    hotelFound = true;
-                    targetHotel = hotel;
-                    break;
-                }
-            }
-            if(hotelFound){
+
+        for(WebElement hotel : driver.findElements(searchResultsTxts)){
+            if(hotel.getText().toLowerCase().contains(hotelName.trim().toLowerCase())){
+                targetHotel = hotel;
                 break;
             }
-            clickLoadMoreResBtn();
         }
 
         if(targetHotel == null){
@@ -49,10 +37,10 @@ public class SearchResultPage {
         }
         else{
             targetHotel.findElement(seeAvailabilityBtn).click();
-            /* Switching to the newly opened tab, just safer than relying on the browser doing that. */
-            Set<String> windowHandles = driver.getWindowHandles();
-            List<String> tabs = new ArrayList<>(windowHandles);
-            driver.switchTo().window(tabs.get(1));
+//            /* Switching to the newly opened tab, just safer than relying on the browser doing that. */
+//            Set<String> windowHandles = driver.getWindowHandles();
+//            List<String> tabs = new ArrayList<>(windowHandles);
+//            driver.switchTo().window(tabs.get(1));
 
             return new DetailsPage(driver);
         }
