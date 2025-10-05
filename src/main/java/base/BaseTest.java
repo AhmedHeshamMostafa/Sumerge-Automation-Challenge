@@ -25,25 +25,32 @@ public class BaseTest {
     static protected HomePage home;
     private final By disPopUpBtn = By.cssSelector("[aria-label=\"Dismiss sign-in info.\"]");
 
+    @BeforeClass
+    public void testClassSetUp(){
+        WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver();
+    }
+
 
     @BeforeMethod
     public void testMethodSetUp(){
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.get("https://www.booking.com/");
         Set<String> windowHandles = driver.getWindowHandles();
         List<String> tabs = new ArrayList<>(windowHandles);
         driver.switchTo().window(tabs.get(0));
+        driver.get("https://www.booking.com/");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
         wait.until(ExpectedConditions.invisibilityOfElementLocated(disPopUpBtn));
         home = new HomePage(driver);
     }
 
     @AfterMethod
-    public void tearDown(){
-        driver.quit();
+    public void tearDownMethod(){
+        driver.close();
     }
 
-
+    @AfterClass
+    public void tearDownClass(){
+        driver.quit();
+    }
 }
 

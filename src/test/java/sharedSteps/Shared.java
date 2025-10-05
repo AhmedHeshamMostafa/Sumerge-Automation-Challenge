@@ -9,15 +9,11 @@ public class Shared extends BaseTest {
     The string should be in the format "YYYY-MM-DD" */
     /* Here I provided check-in date as 1 October 2026, not 1 October 2024 nor 1 October 2025
     because the date picker in the website does NOT allow dates in the past */
-    static protected String checkInDate = "2026-10-1";
-    static protected String checkOutDate = "2026-10-14";
-    static private String destination = "Alexandria";
-    static protected String hotelNameExp = "Tolip Hotel Alexandria";
 
     static protected SearchResultPage searchResPg;
     static protected DetailsPage detailsPg;
 
-    static public void stepsToShare(){
+    static public void stepsToShare(String checkInDate, String checkOutDate, String destination, String hotelNameExp){
         home.enterDestination(destination);
         home.enterDates(checkInDate, checkOutDate);
         searchResPg = home.clickSearchBtn();

@@ -37,10 +37,10 @@ public class SearchResultPage {
         }
         else{
             targetHotel.findElement(seeAvailabilityBtn).click();
-//            /* Switching to the newly opened tab, just safer than relying on the browser doing that. */
-//            Set<String> windowHandles = driver.getWindowHandles();
-//            List<String> tabs = new ArrayList<>(windowHandles);
-//            driver.switchTo().window(tabs.get(1));
+            /* Switching to the newly opened tab, just safer than relying on Selenium doing that. */
+            Set<String> windowHandles = driver.getWindowHandles();
+            List<String> tabs = new ArrayList<>(windowHandles);
+            driver.switchTo().window(tabs.get(1));
 
             return new DetailsPage(driver);
         }
